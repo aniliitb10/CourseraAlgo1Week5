@@ -22,7 +22,8 @@ public class NearestNeighborVisualizer {
         // initialize the two data structures with point from file
         String filename = args[0];
         In in = new In(filename);
-        KdTree solver = new KdTree();
+//        KdTree solver = new KdTree();
+        PointSET solver = new PointSET();
         while (!in.isEmpty()) {
             double x = in.readDouble();
             double y = in.readDouble();

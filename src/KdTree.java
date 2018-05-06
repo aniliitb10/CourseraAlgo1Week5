@@ -2,9 +2,8 @@ import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.RectHV;
 import edu.princeton.cs.algs4.StdDraw;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
-import java.util.zip.DeflaterOutputStream;
 
 public class KdTree {
 
@@ -64,20 +63,9 @@ public class KdTree {
       }
     }
 
-    public RectHV getLeftRect()
-    {
-      return _leftRect;
-    }
+    public RectHV getLeftRect() { return _leftRect; }
 
-    public RectHV getRightRect()
-    {
-      return _rightRect;
-    }
-
-    public boolean isInsideRect(RectHV rect_)
-    {
-      return rect_.contains(this._point);
-    }
+    public RectHV getRightRect() { return _rightRect; }
 
     public boolean rectsIntersact(RectHV other_)
     {
@@ -119,8 +107,6 @@ public class KdTree {
   {
     if (node_ == null)
     {
-      System.out.println("Point: " + point_.toString() + ", rect: " + rect_.toString());
-
       this._size++;
       return new Node(point_, compareByY_, rect_);
     }
@@ -137,18 +123,27 @@ public class KdTree {
   // add the point to the set (if it is not already in the set)
   public void insert(Point2D point_)
   {
+    if (point_ == null)
+    {
+      throw new java.lang.IllegalArgumentException();
+    }
     _root = insert(_root, false, point_, new RectHV(0,0, 1, 1));
   }
 
   // does the set contain point p?
   public boolean contains(Point2D point_)
   {
+    if (point_ == null)
+    {
+      throw new java.lang.IllegalArgumentException();
+    }
+
     Node currentNode = this._root;
     while(currentNode != null)
     {
-      int comp = currentNode._point.compareTo(point_);
-      if      (comp < 0) currentNode = currentNode._rightNode;
-      else if (comp > 0) currentNode = currentNode._leftNode;
+      int comp = (-1 * currentNode.compareTo(point_));
+      if      (comp < 0) currentNode = currentNode._leftNode;
+      else if (comp > 0) currentNode = currentNode._rightNode;
       else               return true;
     }
 
@@ -166,10 +161,7 @@ public class KdTree {
   }
 
   // draw all points to standard draw
-  public void draw()
-  {
-    draw(this._root);
-  }
+  public void draw() { draw(this._root); }
 
   private void range(Node node_, RectHV rect_, ArrayList<Point2D> points_)
   {
@@ -190,9 +182,17 @@ public class KdTree {
   // all points that are inside the rectangle (or on the boundary)
   public Iterable<Point2D> range(RectHV rect_)
   {
-    if (!this._root.rectsIntersact(rect_)) return null;
+    if (rect_ == null)
+    {
+      throw new java.lang.IllegalArgumentException();
+    }
 
     ArrayList<Point2D> points = new ArrayList<>();
+
+    if (_root == null) return points;
+
+    if (!this._root.rectsIntersact(rect_)) return points;
+
     range(_root, rect_, points);
 
     return points;
@@ -229,6 +229,13 @@ public class KdTree {
   // a nearest neighbor in the set to point p; null if the set is empty
   public Point2D nearest(Point2D point_)
   {
+    if (point_ == null)
+    {
+      throw new java.lang.IllegalArgumentException();
+    }
+
+    if (_root == null) return null;
+
     Point2D nearestPoint = _root._point;
     return nearest(_root, nearestPoint, point_);
   }
