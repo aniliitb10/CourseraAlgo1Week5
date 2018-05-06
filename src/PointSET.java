@@ -10,34 +10,19 @@ public class PointSET {
   private TreeSet<Point2D> _pointSet;
 
   // construct an empty set of points
-  public PointSET()
-  {
-    _pointSet = new TreeSet<>(Point2D.X_ORDER);
-  }
+  public PointSET() { _pointSet = new TreeSet<>(Point2D.X_ORDER); }
 
   // is the set empty?
-  public boolean isEmpty()
-  {
-    return _pointSet.isEmpty();
-  }
+  public boolean isEmpty() { return _pointSet.isEmpty(); }
 
   // number of points in the set
-  public int size()
-  {
-    return _pointSet.size();
-  }
+  public int size() { return _pointSet.size(); }
 
   // add the point to the set (if it is not already in the set)
-  public void insert(Point2D point_)
-  {
-    _pointSet.add(point_);
-  }
+  public void insert(Point2D point_) { _pointSet.add(point_); }
 
   // does the set contain point p?
-  public boolean contains(Point2D point_)
-  {
-    return _pointSet.contains(point_);
-  }
+  public boolean contains(Point2D point_) { return _pointSet.contains(point_); }
 
   // draw all points to standard draw
   public void draw()
