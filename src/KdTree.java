@@ -4,6 +4,7 @@ import edu.princeton.cs.algs4.StdDraw;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.zip.DeflaterOutputStream;
 
 public class KdTree {
 
@@ -197,10 +198,39 @@ public class KdTree {
     return points;
   }
 
+  private Point2D nearest(Node node_, Point2D nearestPoint_, Point2D givenPoint_)
+  {
+    if (node_ == null) return nearestPoint_;
+
+    double currentNearestDistance = nearestPoint_.distanceTo(givenPoint_);
+    if (currentNearestDistance <= node_._area.distanceTo(givenPoint_)) return nearestPoint_;
+
+    double distanceFromThisNode = node_._point.distanceTo(givenPoint_);
+    nearestPoint_ = ((distanceFromThisNode < currentNearestDistance) ? node_._point : nearestPoint_);
+
+    if ((node_._leftNode == null) && (node_._rightNode == null))
+    {
+      return nearestPoint_;
+    }
+
+    if (node_._rightNode != null)
+    {
+      nearestPoint_ = nearest(node_._rightNode, nearestPoint_, givenPoint_);
+    }
+
+    if (node_._leftNode != null)
+    {
+      nearestPoint_ = nearest(node_._leftNode, nearestPoint_, givenPoint_);
+    }
+
+    return nearestPoint_;
+  }
+
   // a nearest neighbor in the set to point p; null if the set is empty
   public Point2D nearest(Point2D point_)
   {
-    return null;
+    Point2D nearestPoint = _root._point;
+    return nearest(_root, nearestPoint, point_);
   }
 
   // unit testing of the methods (optional)
